@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 
-function Create_Event () {
+function Create_Event ({ organizer_id }) {
     const [eventName, setEventName] = useState('');
-  const [organizerId, setOrganizerId] = useState('');
+//   const [organizerId, setOrganizerId] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [eventDateTime, setEventDateTime] = useState('');
   const [message, setMessage] = useState('');
@@ -13,7 +13,7 @@ function Create_Event () {
     try {
       const response = await axios.post('http://localhost/metro%20events/create_event.php', {
         event_name: eventName,
-        organizer: organizerId,
+        organizer: organizer_id,
         event_description: eventDescription,
         event_datetime: eventDateTime,
       }, {
@@ -35,11 +35,6 @@ function Create_Event () {
         <label>
           Event Name:
           <input type="text" value={eventName} onChange={(e) => setEventName(e.target.value)} required />
-        </label>
-        <br />
-        <label>
-          Organizer ID:
-          <input type="number" value={organizerId} onChange={(e) => setOrganizerId(e.target.value)} required />
         </label>
         <br />
         <label>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login(){
+function Login({ setUserid, setAdminid, setOrgid }){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -24,6 +24,7 @@ function Login(){
       if (response.data.message) {
         // Login successful, navigate to appropriate page
         if (response.data.message === 'organizer') {
+          setOrgid(response.data.user);
           navigate('/organizer');
         } else {
           setMessage(response.data.message);
