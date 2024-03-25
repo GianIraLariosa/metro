@@ -82,37 +82,47 @@ function Organizer({ organizer_id }) {
   }
 
   return (
-    <div>
-      <h2>Data from Table: Events</h2>
-      <table border="1">
+    <div style={{ 
+      backgroundColor: '#ACE2E1', 
+      padding: '40px', 
+      borderRadius: '8px', 
+      width: 'fit-content', 
+      margin: 'auto',
+      position: 'absolute' ,
+      top: '50%', 
+      left: '50%', 
+      transform: 'translate(-50%, -50%)', 
+      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', 
+      fontFamily: 'Lato, sans-serif' }}>
+      <h2 style={{ color: '#008DDA' }}>Create/Modify Events</h2>
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <thead>
           <tr>
-            {/* Skip the first column */}
-            {Object.keys(data[0]).slice(1).map((column, index) => (
-              <th key={index}>{column}</th>
-            ))}
-            <th>Edit</th>
+            <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Event</th>
+            <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Organizer</th>
+            <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Description</th>
+            <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Date & Time</th>
+            <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Edit</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {/* Skip the first value in each row */}
+            <tr key={rowIndex} style={{ borderBottom: '1px solid #000000' }}>
               {Object.values(row).slice(1).map((value, valueIndex) => (
-                <td key={valueIndex}>{value}</td>
+                <td key={valueIndex} style={{ padding: '10px' }}>{value}</td>
               ))}
-              <td>
-                <button onClick={() => handleEdit(row)}>Edit</button>
+              <td style={{ padding: '10px' }}>
+                <button style={{ backgroundColor: '#41C9E2', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', cursor: 'pointer' }} onClick={() => handleEdit(row)}>Edit</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
+    
       {/* Edit Form */}
       {editingRecord && (
-        <div>
-          <h2>Edit Record</h2>
+        <div style={{ marginTop: '20px' }}>
+          <h2 style={{ color: '#008DDA' }}>Edit Record</h2>
           <form onSubmit={handleEditSubmit}>
             <label>
               Event Name:
@@ -121,6 +131,7 @@ function Organizer({ organizer_id }) {
                 value={editFormData.event_name}
                 onChange={(e) => setEditFormData({ ...editFormData, event_name: e.target.value })}
                 required
+                className="edit-input"
               />
             </label>
             <br />
@@ -131,6 +142,7 @@ function Organizer({ organizer_id }) {
                 value={editFormData.event_description}
                 onChange={(e) => setEditFormData({ ...editFormData, event_description: e.target.value })}
                 required
+                className="edit-input"
               />
             </label>
             <br />
@@ -141,15 +153,15 @@ function Organizer({ organizer_id }) {
                 value={editFormData.event_datetime}
                 onChange={(e) => setEditFormData({ ...editFormData, event_datetime: e.target.value })}
                 required
+                className="edit-input"
               />
             </label>
             <br />
-            <button type="submit">Save Changes</button>
+            <button type="submit" style={{ backgroundColor: '#41C9E2', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', cursor: 'pointer', marginTop: '10px' }}>Save Changes</button>
           </form>
         </div>
       )}
-
-      <button onClick={handleOnClick}>Create Event</button>
+      <button onClick={handleOnClick} style={{ backgroundColor: '#41C9E2', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', marginTop: '20px', cursor: 'pointer' }}>Create Event</button>
     </div>
   );
 }
