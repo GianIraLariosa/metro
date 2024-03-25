@@ -35,38 +35,6 @@ function Login({ setUserid, setAdminid, setOrgid }) {
       setMessage('An error occurred. Please try again later.');
     }
   };
-<<<<<<< HEAD
-    return(
-        <div>
-            <h1>Login</h1>
-        <form onSubmit={handleLogin}>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </label>
-          <br />
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-          <br />
-          <button type="submit">Login</button>
-        </form>
-        <button onClick={navigate()}>Register</button>
-        <p>{message}</p>
-        </div>
-    );
-=======
 
   return (
     <div style={{ backgroundColor: '#ACE2E1', padding: '40px', borderRadius: '8px', width: '400px', margin: 'auto',position: 'absolute' ,top: '50%', left: '50%', transform: 'translate(-50%, -50%)', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', fontFamily: 'Lato, sans-serif' }}>
@@ -101,7 +69,6 @@ function Login({ setUserid, setAdminid, setOrgid }) {
       <p style={{ color: '#008DDA', textAlign: 'center', marginTop: '10px' }}>{message}</p>
     </div>
   );
->>>>>>> 3637d9664de4a0827b1fc8278e013861b548c48a
 }
 
 export default Login;
