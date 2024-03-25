@@ -37,7 +37,18 @@ function Login({ setUserid, setAdminid, setOrgid }) {
   };
 
   return (
-    <div style={{ backgroundColor: '#ACE2E1', padding: '40px', borderRadius: '8px', width: '400px', margin: 'auto',position: 'absolute' ,top: '50%', left: '50%', transform: 'translate(-50%, -50%)', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', fontFamily: 'Lato, sans-serif' }}>
+    <div style={{ 
+      backgroundColor: '#ACE2E1', 
+      padding: '40px', 
+      borderRadius: '8px', 
+      width: '400px', 
+      margin: 'auto',
+      position: 'absolute' ,
+      top: '50%', 
+      left: '50%', 
+      transform: 'translate(-50%, -50%)', 
+      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', 
+      fontFamily: 'Lato, sans-serif' }}>
       <h1 style={{ textAlign: 'center', color: '#008DDA' }}>Welcome to Metro Events!</h1>
       <form onSubmit={handleLogin}>
 
