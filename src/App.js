@@ -17,7 +17,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Login setUserid={setUserid} setAdminid={setAdminid} setOrgid={setOrgid}/>} />
-          <Route path="/organizer" element={<Organizer />} />
+          <Route path="/organizer" element={<Organizer organizer_id={organizer_id}/>} />
           <Route path='/organizer/create_event' element={<Create_Event organizer_id={organizer_id}/>} />
         </Routes>
       </BrowserRouter>

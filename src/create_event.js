@@ -2,8 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 
 function Create_Event ({ organizer_id }) {
-    const [eventName, setEventName] = useState('');
-//   const [organizerId, setOrganizerId] = useState('');
+  const [eventName, setEventName] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [eventDateTime, setEventDateTime] = useState('');
   const [message, setMessage] = useState('');
