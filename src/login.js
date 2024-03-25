@@ -64,6 +64,7 @@ function Login({ setUserid, setAdminid, setOrgid }){
           <br />
           <button type="submit">Login</button>
         </form>
+        <button onClick={navigate()}>Register</button>
         <p>{message}</p>
         </div>
     );
