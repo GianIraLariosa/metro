@@ -25,7 +25,9 @@ function Login({ setUserid, setAdminid, setOrgid }) {
           setOrgid(response.data.user);
           navigate('/organizer');
         } else {
+          setUserid(response.data.user);
           setMessage(response.data.message);
+          navigate('/user');
         }
       } else if (response.data.error) {
         setMessage(response.data.error);
