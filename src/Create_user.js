@@ -22,10 +22,10 @@ const RegisterUser = ({ setUserid, setAdminid, setOrgid }) => {
         try {
             const response = await axios.post('http://localhost/metro events/create_user.php', formData);
 
-            if (response.data.message) {
-                setMessage(response.data.message);
-                // Assuming redirection or state setting based on the response
-                // setUserId(response.data.userId);
+            console.log(response);
+
+            if (response.data) {
+                setMessage(response.data);
                 // navigate('/dashboard');
             } else if (response.data.error) {
                 setMessage(response.data.error);
