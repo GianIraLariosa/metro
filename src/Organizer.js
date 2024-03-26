@@ -1,12 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import EventPopup from "./component/CreateEventPopup";
 
 function Organizer({ organizer_id }) {
   const navigate = useNavigate();
+  const [popupOpen, setPopupOpen] = useState(false);
 
   const handleOnClick = () => {
-    navigate('create_event');
+    setPopupOpen(true);
+  }
+
+  const handleClosePopup = () => {
+    setPopupOpen(false);
   }
 
   const [data, setData] = useState([]);
@@ -88,7 +94,7 @@ function Organizer({ organizer_id }) {
       borderRadius: '8px', 
       width: 'fit-content', 
       margin: 'auto',
-      position: 'absolute' ,
+      position: 'absolute',
       top: '50%', 
       left: '50%', 
       transform: 'translate(-50%, -50%)', 
@@ -145,7 +151,7 @@ function Organizer({ organizer_id }) {
                 className="edit-input"
               />
             </label>
-            <br />
+            <br/>
             <label>
               Event Datetime:
               <input
@@ -161,7 +167,11 @@ function Organizer({ organizer_id }) {
           </form>
         </div>
       )}
-      <button onClick={handleOnClick} style={{ backgroundColor: '#41C9E2', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', marginTop: '20px', cursor: 'pointer' }}>Create Event</button>
+      <div>
+        <button onClick={handleOnClick} style={{ backgroundColor: '#41C9E2', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', marginTop: '20px', cursor: 'pointer' }}>Create Event</button>
+        {popupOpen && <EventPopup organizer_id={organizer_id} onClose={handleClosePopup} />}
+      </div>
+      {/* <button onClick={handleOnClick} style={{ backgroundColor: '#41C9E2', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', marginTop: '20px', cursor: 'pointer' }}>Create Event</button> */}
     </div>
   );
 }

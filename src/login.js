@@ -79,8 +79,10 @@ function Login({ setUserid, setAdminid, setOrgid }) {
       </form>
 
       <p style={{ color: '#008DDA', textAlign: 'center', marginTop: '10px' }}>{message}</p>
-
-      <button onClick={() => navigate('/register')} style={{ backgroundColor: '#41C9E2', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', marginTop: '10px', cursor: 'pointer' }}>Sign Up</button>
+      <div style={{ textAlign: 'center', marginTop: '10px' }}>
+        <p style={{ display: 'inline', textDecoration: 'none', color: '#FFFFFF', marginRight: '5px' }}>Don't have an account?</p>
+        <a href="/register" style={{ textDecoration: 'none', color: '#41C9E2' }}>Register Now!</a>
+      </div>
     </div>
   );
 }
