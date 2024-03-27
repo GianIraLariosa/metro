@@ -14,18 +14,18 @@ function Login({ setUserid, setAdminid, setOrgid }) {
     try {
       const response = await axios.get('http://localhost/metro%20events/login.php', {
         params: {
-          username,
+          username, 
           password,
         },
       });
 
-      console.log(response.data);
+      console.log(response.data.user.user_id);
       if (response.data.message) {
         if (response.data.message === 'organizer') {
           setOrgid(response.data.user);
           navigate('/organizer');
         } else {
-          setUserid(response.data.user);
+          setUserid(response.data.user.user_id);
           setMessage(response.data.message);
           navigate('/user');
         }

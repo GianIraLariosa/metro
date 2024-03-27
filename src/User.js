@@ -4,12 +4,12 @@ import axios from 'axios';
 function UserPage({ userId }) {
   const [requestSent, setRequestSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  
+  console.log(userId);
   const handleRequestSubmit = async () => {
-    
     try {
       const response = await axios.post('http://localhost/metro%20events/request_organizer.php', {
-        userId: userId,
+        userId: userId // assuming userId is a string or number
       });
       if (response.data.success) {
         setRequestSent(true);
@@ -21,6 +21,7 @@ function UserPage({ userId }) {
       setErrorMessage('An error occurred. Please try again later.');
     }
   };
+  
 
   return (
     <div style={{ 
