@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function UserPage({ userId }) {
@@ -6,12 +6,18 @@ function UserPage({ userId }) {
   const [errorMessage, setErrorMessage] = useState('');
   
   console.log(userId);
+
+  const formData = new FormData();
+  formData.append('user_id', userId);
+  
+
+
   const handleRequestSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost/metro%20events/request_organizer.php', {
-        userId: userId // assuming userId is a string or number
-      });
-      if (response.data.success) {
+      const response = await axios.post('http://localhost/metro%20events/request_organizer.php', formData);
+      console.log(response);
+
+      if (response.data == 'Successfull') {
         setRequestSent(true);
       } else {
         setErrorMessage(response.data.message || 'Failed to send request. Please try again later.');

@@ -19,16 +19,26 @@ function Login({ setUserid, setAdminid, setOrgid }) {
         },
       });
 
-      console.log(response.data.user.user_id);
+      console.log(response);
       if (response.data.message) {
-        if (response.data.message === 'organizer') {
+
+        if (response.data.message == 'organizer'){
           setOrgid(response.data.user);
           navigate('/organizer');
-        } else {
+        }
+         
+        
+        if(response.data.message == 'admin'){
+          setAdminid(response.data.user.user_id);
+          setMessage(response.data.message);
+        }
+
+        if(response.data.message == 'user'){
           setUserid(response.data.user.user_id);
           setMessage(response.data.message);
           navigate('/user');
         }
+
       } else if (response.data.error) {
         setMessage(response.data.error);
       }
