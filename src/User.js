@@ -12,7 +12,7 @@ function UserPage({ userId }) {
       try {
         const response = await axios.get('http://localhost/metro%20events/events.php');
         if (response.data.success) {
-          setEvents(response.data.events);
+          setEvents(response.data.events.map(event => ({ ...event, upvotes: 0, comments: [] })));
         } else {
           setErrorMessage(response.data.message || 'Failed to fetch events.');
         }
@@ -45,7 +45,62 @@ function UserPage({ userId }) {
       setErrorMessage('An error occurred. Please try again later.');
     }
   };
+
+  const handleUpvote = async (eventId) => {
+    // Creating a new FormData object to store user_id and eventid
+    let formData = new FormData();
+    formData.append('user_id', userId);
+    formData.append('eventid', eventId);
+    
+    try {
+      // Making a POST request to 'handle_upvote.php' with formData
+      const response = await axios.post('http://localhost/metro%20events/handle_upvote.php', formData);
+      console.log(response.data);
+      const upvoteCount = response.data;
+      if (response.data == 'Successfull') {
+        setRequestSent(true);
+        setErrorMessage(response.data.message || 'Upvote Successful');
+      } else {
+        setErrorMessage(response.data.message || 'Failed to Upvote');
+      }
+      setEvents(prevEvents => prevEvents.map(event => {
+        if (event.id === eventId) {
+          // Increment upvotes count for the specific event
+          return { ...event, upvotes: event.upvotes + 1 };
+        }
+        return event;
+      }));
+    } catch (error) {
+      // If an error occurs during the request, log the error and set an error message
+      console.error('Error:', error);
+      setErrorMessage('An error occurred while upvoting. Please try again later.');
+    }
+  };
   
+  
+  const handleComment = async (eventId, comment) => {
+    
+  formData = new FormData();
+  formData.append('user_id', userId);
+  formData.append('eventid', eventId);
+  formData.append('comment', comment);
+    try {
+      // Make a POST request to handle_comment.php with eventId and comment
+      await axios.post('http://localhost/metro%20events/handle_comment.php', formData);
+      
+      // If successful, update the event state to reflect the new comment
+      setEvents(prevEvents => prevEvents.map(event => {
+        if (event.id === eventId) {
+          return { ...event, comments: [...event.comments, comment] };
+        }
+        return event;
+      }));
+    } catch (error) {
+      console.error('Error:', error);
+      setErrorMessage('An error occurred while adding a comment. Please try again later.');
+    }
+  };
+
   const handleJoinEvent = async (eventid) => {
     
   formData = new FormData();
@@ -55,7 +110,7 @@ function UserPage({ userId }) {
       console.log(userId + ", " +eventid);
       const response = await axios.post('http://localhost/metro%20events/join_event.php', formData);
       if (response.data.success) {
-        // Handle success, e.g., show a confirmation message
+        setErrorMessage('Request sent successfully');
       } else {
         setErrorMessage(response.data.message || 'Failed to join event. Please try again later.');
       }
@@ -70,7 +125,7 @@ function UserPage({ userId }) {
       backgroundColor: '#ACE2E1', 
       padding: '40px', 
       borderRadius: '8px', 
-      width: '400px', 
+      width: '800px', 
       margin: 'auto',
       position: 'absolute' ,
       top: '50%', 
@@ -81,39 +136,14 @@ function UserPage({ userId }) {
     >
       <h1 style={{ textAlign: 'center', color: '#008DDA' }}>Welcome User!</h1>
       <p style={{ textAlign: 'center' }}>You are logged in as User</p>
-      
-      {!requestSent && (
-        <div style={{ textAlign: 'center' }}>
-          <button 
-            onClick={handleRequestSubmit} 
-            style={{
-              backgroundColor: '#41C9E2',
-              color: '#F7EEDD',
-              padding: '8px 20px',
-              borderRadius: '4px',
-              border: 'none',
-              marginTop: '20px',
-              cursor: 'pointer'
-            }}
-          >
-            Request to be an Organizer
-          </button>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        </div>
-      )}
 
-      {requestSent && (
-        <p style={{ textAlign: 'center', color: 'green', marginTop: '20px' }}>
-          Request sent successfully. We will review your request soon.
-        </p>
-      )}
-
-<table style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
+      <table style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th style={{ borderBottom: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Event Name</th>
             <th style={{ borderBottom: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Description</th>
             <th style={{ borderBottom: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Date & Time</th>
+            <th style={{ borderBottom: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -124,11 +154,20 @@ function UserPage({ userId }) {
               <td style={{ borderBottom: '1px solid #ddd', padding: '8px' }}>{event.date}</td>
               <td style={{ borderBottom: '1px solid #ddd', padding: '8px' }}>
                 <button onClick={() => handleJoinEvent(event.id)}>Join Event</button>
+                <button onClick={() => handleUpvote(event.id)}>Upvote ({event.upvotes})</button>
+                <input type="text" placeholder="Add a comment" />
+                <button onClick={() => handleComment(event.id, "New Comment")}>Comment</button>
+                <ul>
+                  {event.comments.map((comment, index) => (
+                    <li key={index}>{comment}</li>
+                  ))}
+                </ul>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {errorMessage && <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>}
     </div>
   );
 }
