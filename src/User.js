@@ -5,6 +5,7 @@ function UserPage({ userId }) {
   const [requestSent, setRequestSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [events, setEvents] = useState([]);
+  const [commentInput, setCommentInput] = useState('');
 
   useEffect(() => {
     // Fetch events data
@@ -25,17 +26,14 @@ function UserPage({ userId }) {
   }, []);
 
 
-  let formData = new FormData();
-
-
   const handleRequestSubmit = async () => {
-  formData = new FormData();
-  formData.append('user_id', userId);
+    const formData = new FormData();
+    formData.append('user_id', userId);
     try {
       const response = await axios.post('http://localhost/metro%20events/request_organizer.php', formData);
       console.log(response);
 
-      if (response.data == 'Successfull') {
+      if (response.data === 'Successfull') {
         setRequestSent(true);
       } else {
         setErrorMessage(response.data.message || 'Failed to send request. Please try again later.');
@@ -47,17 +45,15 @@ function UserPage({ userId }) {
   };
 
   const handleUpvote = async (eventId) => {
-    // Creating a new FormData object to store user_id and eventid
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('user_id', userId);
     formData.append('eventid', eventId);
     
     try {
-      // Making a POST request to 'handle_upvote.php' with formData
       const response = await axios.post('http://localhost/metro%20events/handle_upvote.php', formData);
       console.log(response.data);
       const upvoteCount = response.data;
-      if (response.data == 'Successfull') {
+      if (response.data === 'Successfull') {
         setRequestSent(true);
         setErrorMessage(response.data.message || 'Upvote Successful');
       } else {
@@ -65,30 +61,24 @@ function UserPage({ userId }) {
       }
       setEvents(prevEvents => prevEvents.map(event => {
         if (event.id === eventId) {
-          // Increment upvotes count for the specific event
-          return { ...event, upvotes: event.upvotes + 1 };
+          return { ...event, upvotes: upvoteCount };
         }
         return event;
       }));
     } catch (error) {
-      // If an error occurs during the request, log the error and set an error message
       console.error('Error:', error);
       setErrorMessage('An error occurred while upvoting. Please try again later.');
     }
   };
   
-  
   const handleComment = async (eventId, comment) => {
-    
-  formData = new FormData();
-  formData.append('user_id', userId);
-  formData.append('eventid', eventId);
-  formData.append('comment', comment);
+    const formData = new FormData();
+    formData.append('user_id', userId);
+    formData.append('eventid', eventId);
+    formData.append('comment', comment);
     try {
-      // Make a POST request to handle_comment.php with eventId and comment
-      await axios.post('http://localhost/metro%20events/handle_comment.php', formData);
-      
-      // If successful, update the event state to reflect the new comment
+      const response = await axios.post('http://localhost/metro%20events/handle_comment.php', formData);
+      console.log(response.data);
       setEvents(prevEvents => prevEvents.map(event => {
         if (event.id === eventId) {
           return { ...event, comments: [...event.comments, comment] };
@@ -102,10 +92,9 @@ function UserPage({ userId }) {
   };
 
   const handleJoinEvent = async (eventid) => {
-    
-  formData = new FormData();
-  formData.append('user_id', userId);
-  formData.append('eventid', eventid);
+    const formData = new FormData();
+    formData.append('user_id', userId);
+    formData.append('eventid', eventid);
     try {
       console.log(userId + ", " +eventid);
       const response = await axios.post('http://localhost/metro%20events/join_event.php', formData);
@@ -155,8 +144,11 @@ function UserPage({ userId }) {
               <td style={{ borderBottom: '1px solid #ddd', padding: '8px' }}>
                 <button onClick={() => handleJoinEvent(event.id)}>Join Event</button>
                 <button onClick={() => handleUpvote(event.id)}>Upvote ({event.upvotes})</button>
-                <input type="text" placeholder="Add a comment" />
-                <button onClick={() => handleComment(event.id, "New Comment")}>Comment</button>
+                <input 
+                  type="text" 
+                  placeholder="Add a comment" 
+                  onChange={(e) => setCommentInput(e.target.value)} />
+                <button onClick={() => handleComment(event.id, commentInput)}>Comment</button>
                 <ul>
                   {event.comments.map((comment, index) => (
                     <li key={index}>{comment}</li>

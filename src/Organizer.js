@@ -29,10 +29,8 @@ function Organizer({ organizer_id }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(organizer_id)
       try {
         const response = await axios.get(`http://localhost/metro%20events/get_table.php?table=event&organizer_id=${organizer_id}`);
-        console.log(response.data);
         setData(response.data);
         setLoading(false);
       } catch (error) {
@@ -54,13 +52,25 @@ function Organizer({ organizer_id }) {
     });
   };
 
-  // Handle form submission for editing
+  // Handle event cancellation
+  const handleCancel = async (eventId) => {
+    let formData = new FormData();
+    formData.append('eventid' , eventId);
+    try {
+      const response = await axios.post(`http://localhost/metro%20events/cancel.php`, formData);
+      // Handle cancellation success
+      console.log(response.data);
+    } catch (error) {
+      console.log("Fail");
+      console.error('Error:', error);
+    }
+  };
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-    
-        const newValues = `event_name=${editFormData.event_name}, event_description=${editFormData.event_description}, event_datetime=${editFormData.event_datetime}`;
-        const response = await axios.get(`http://localhost/metro%20events/update_record.php?table=event&pk_name=event_id&pk_value=${editingRecord.event_id}&new_values=${newValues}`);
+      const newValues = `event_name=${editFormData.event_name}, event_description=${editFormData.event_description}, event_datetime=${editFormData.event_datetime}`;
+      const response = await axios.get(`http://localhost/metro%20events/update_record.php?table=event&pk_name=event_id&pk_value=${editingRecord.event_id}&new_values=${newValues}`);
       console.log(editFormData.event_datetime + "shdflksdjflkjksd");
       // Update the edited record in the local state or refetch the data
       // Clear the editing state
@@ -110,6 +120,7 @@ function Organizer({ organizer_id }) {
             <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Description</th>
             <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Date & Time</th>
             <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Edit</th>
+            <th style={{ borderBottom: '2px solid #000000', padding: '10px' }}>Cancel</th>
           </tr>
         </thead>
         <tbody>
@@ -120,6 +131,9 @@ function Organizer({ organizer_id }) {
               ))}
               <td style={{ padding: '10px' }}>
                 <button style={{ backgroundColor: '#41C9E2', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', cursor: 'pointer' }} onClick={() => handleEdit(row)}>Edit</button>
+              </td>
+              <td style={{ padding: '10px' }}>
+                <button style={{ backgroundColor: 'red', color: '#F7EEDD', padding: '8px 20px', borderRadius: '4px', border: 'none', cursor: 'pointer' }} onClick={() => handleCancel(row.event_id)}>Cancel</button>
               </td>
             </tr>
           ))}
