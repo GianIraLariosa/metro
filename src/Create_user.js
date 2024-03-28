@@ -26,7 +26,7 @@ const RegisterUser = ({ setUserid, setAdminid, setOrgid }) => {
 
             if (response.data) {
                 setMessage(response.data);
-                // navigate('/dashboard');
+                navigate('/login');
             } else if (response.data.error) {
                 setMessage(response.data.error);
             }
