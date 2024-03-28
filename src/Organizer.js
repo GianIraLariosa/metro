@@ -29,6 +29,7 @@ function Organizer({ organizer_id }) {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(organizer_id)
       try {
         const response = await axios.get(`http://localhost/metro%20events/get_table.php?table=event&organizer_id=${organizer_id}`);
         console.log(response.data);
