@@ -24,11 +24,11 @@ const RegisterUser = ({ setUserid, setAdminid, setOrgid }) => {
 
             console.log(response);
 
-            if (response.data) {
+            if (response.data == 'Welcome') {
                 setMessage(response.data);
                 navigate('/');
-            } else if (response.data.error) {
-                setMessage(response.data.error);
+            } else {
+                setMessage("Username already Exists");
             }
         } catch (error) {
             setMessage('Error submitting the form');

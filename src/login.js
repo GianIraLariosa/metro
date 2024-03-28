@@ -31,6 +31,7 @@ function Login({ setUserid, setAdminid, setOrgid }) {
         if(response.data.message == 'admin'){
           setAdminid(response.data.user.user_id);
           setMessage(response.data.message);
+          navigate('admin');
         }
 
         if(response.data.message == 'user'){

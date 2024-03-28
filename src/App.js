@@ -7,6 +7,8 @@ import Login from './login'
 import Create_Event from './create_event';
 import CreateUser from './Create_user';
 import User from './User';
+import Admin from './Admin';
+
 function App() {
   const [user_id, setUserid] = useState('');
   const [admin_id, setAdminid] = useState('');
@@ -22,6 +24,7 @@ function App() {
           <Route path='/organizer/create_event' element={<Create_Event organizer_id={organizer_id}/>} />
           <Route path='/register' element={<CreateUser/>}/>
           <Route path='user' element={<User userId = {user_id}/>}/>
+          <Route path='admin' element={<Admin user_id={user_id}/>} />
         </Routes>
       </BrowserRouter>
     </div>
